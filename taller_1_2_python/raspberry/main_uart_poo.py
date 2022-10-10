@@ -1,15 +1,44 @@
 #!/usr/bin/env python3
 """ Programa principal corriendo en raspberry pi.
 Se conecta al bus I2C de los GPIO y lee los datos del sensor de dirección 8.
+Además considera la clase Sensor para leer los datos del sensor de temperatura.
+keywords: i2c, sensor, temperatura, getter, setter, clase, python
 
 Autores: Juan Carlos Muñoz
          José Henríquez
-keywords: i2c, sensor, temperatura, python
 """
 
 import sys
 import smbus2 as smbus
 import time
+
+class Sensor:
+    """ Clase que representa un sensor. """
+    def __init__(self, I2Cbus, I2C_SLAVE_ADDRESS):
+        self.I2Cbus = I2Cbus
+        self.I2C_SLAVE_ADDRESS = I2C_SLAVE_ADDRESS
+        self.valor = 0
+
+    def leer(self):
+        """ Función que lee los datos del sensor. """
+        try:
+            data = self.I2Cbus.read_i2c_block_data(self.I2C_SLAVE_ADDRESS,0x00,16)
+            print("Recibido desde Arduino:")
+            print(data)
+            # convierte los datos y los procesa
+            data = procesarDatoSensor(str(data))
+            self.valor = data
+            return data
+        except:
+            print("Error de lectura")
+            # Se limita a un entero con signo, asumiendo que el rango del sensor es de 0 a 100°C. El -99 indica un error.
+            self.valor = -99
+            time.sleep(0.5)
+            return -1
+    
+    def valor(self):
+        """ Función que retorna el valor del sensor. """
+        return self.valor
 
 def map(x, in_min, in_max, out_min, out_max):
     """ Función que mapea un valor de un rango a otro. """
@@ -49,11 +78,11 @@ def main():
         # lee los datos del sensor
         while True:
             try:
-                data = I2Cbus.read_i2c_block_data(I2C_SLAVE_ADDRESS,0x00,16)
+                sensor = Sensor(I2Cbus, I2C_SLAVE_ADDRESS)
+                #se invoca el método de la clase para que obtenga el valor del sensor
+                sensor.leer()
                 print("Recibido desde Arduino:")
-                print(data)
-                # convierte los datos y los procesa
-                data = procesarDatoSensor(str(data))
+                print(sensor.valor)
             except:
                 print("Error de lectura")
                 time.sleep(0.5)

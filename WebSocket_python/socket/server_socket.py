@@ -15,8 +15,19 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #make new socket, pri
 #para stream
 server.bind(ADDR)#ADDR necesariemente necesita ser un tuple.
 
+# lista de macs autorizadas
+macs = [
+    "A4:2B:8C:1D:2E:3F",
+    "B5:3C:9D:2E:4F:5G",
+    "C6:4D:0E:3F:5G:6H",
+    "D7:5E:1F:4G:6H:7I",
+]
+
 def handle_client(conn, addr):
     print(f"[NEW CONNECTION] {addr} connected.")
+    
+    # flag para saber si se ha realizado el handshake
+    autorizacion = False
 
     connected = True
     #cuando estemso conectados
@@ -26,17 +37,32 @@ def handle_client(conn, addr):
             msg_length = int(msg_length)
             msg = conn.recv(msg_length).decode(FORMAT)
 
-
             #separar datos
 
             if msg == DISCONNECT_MESSAGE:
                 connected = False
 
-            print(f"[{addr}] {msg}")
-            conn.send("Msg received".encode(FORMAT))
+            #Se busca por el caracter | para separar los datos recibidos y buscar las instrucciones y sus parámetros
+            if msg.split("|")[0] == "handshake":
+                print("Realizando handshake")
+
+                #Se busca la mac en la lista de macs autorizadas
+                if msg.split("|")[1] in macs:
+                    conn.send("handshake|OK".encode(FORMAT))
+                    print("Conexion exitosa")
+                    autorizacion = True
+                else:
+                    #Si la mac no está en la lista de macs autorizadas se envía un mensaje de error
+                    conn.send("handshake|FAIL".encode(FORMAT))
+                    print("Conexion fallida")
+                    autorizacion = False
+
+            # Solo se realizan acciones una vez se ha realizado el handshake
+            if autorizacion:
+                print(f"[{addr}] {msg}")
+                conn.send("Mensaje recibido".encode(FORMAT))
 
     conn.close()
-
 
 def start():
     server.listen()

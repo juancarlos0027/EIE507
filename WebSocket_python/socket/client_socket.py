@@ -12,6 +12,14 @@ ADDR = (SERVER, PORT)
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR)
 
+autorizacion = False
+
+def getMacAddress():
+    mac = hex(uuid.getnode()).replace('0x', '').upper()
+    #Cambia el formato de la mac address para que sea mas legible
+    mac = ':'.join(mac[i: i + 2] for i in range(0, 11, 2))
+    return mac
+
 def send(msg):
     message = msg.encode(FORMAT) #encode the message in byte format o encode str in byte object
     msg_length = len(message)
@@ -20,9 +28,27 @@ def send(msg):
     #b'' byte representación
     client.send(send_length)
     client.send(message)
-    print(client.recv(2048).decode(FORMAT))
 
-Casos_activos = 123
+    if(autorizacion == False):
+        if(client.recv(2048).decode(FORMAT) == "handshake|OK"):
+            autorizacion = True
+            print("Conexion exitosa")
+        elif(client.recv(2048).decode(FORMAT) == "handshake|FAIL"):
+            print("Handshake fallido")
+        else:
+            print("Error en handshake")
+    else:
+        print(client.recv(2048).decode(FORMAT))
+
+# Se envía el mensaje indicando que se está realizando el handshake
+send("handshake|"+getMacAddress())
+
+if(autorizacion == True):
+    print("Ahora puedes enviar mensajes")
+else:
+    print("No se pudo conectar por lo que no puedes enviar mensajes")
+
+""" Casos_activos = 123
 muertes = 123
 msg = "Casos_activos," + str(Casos_activos)+ ", muertes," + str(123)
 send(msg)
@@ -34,6 +60,14 @@ send(data_socket)
 input()
 send("Hello Everyone!")
 input()
-send("Hello EIE!")
+send("Hello EIE!") """
 
-send(DISCONNECT_MESSAGE)
+print("Escriba CERRAR para cerrar la conexión")
+# entra en un bucle para enviar mensajes y verificar si se debe cerrar la conexión
+while True:
+    msg = input("Escriba un mensaje: ")
+    if(msg == "CERRAR"):
+        send(DISCONNECT_MESSAGE)
+        break
+    else:
+        send(msg)

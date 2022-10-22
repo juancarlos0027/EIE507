@@ -2,7 +2,7 @@ import socket
 import os
 
 HEADER = 64
-PORT = 3074
+PORT = 8080
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
 SERVER = '192.168.1.20'

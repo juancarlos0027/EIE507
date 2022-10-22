@@ -2,7 +2,7 @@ import socket
 import threading
 
 HEADER = 64
-PORT = 80
+PORT = 8080
 SERVER = '192.168.1.20'
 #socket.gethostbyname(socket.gethostname())
 #osip = os.popen('curl ifconfig.me').readline()

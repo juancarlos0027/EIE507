@@ -25,6 +25,7 @@ macs = [
 ]
 
 def handle_client(conn, addr):
+    global macs
     print(f"[NEW CONNECTION] {addr} connected.")
     
     # flag para saber si se ha realizado el handshake

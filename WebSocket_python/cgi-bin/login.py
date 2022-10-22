@@ -9,7 +9,7 @@ form = cgi.FieldStorage()
 
 first_name = form.getvalue('name')
 last_name = form.getvalue('lastname')
-mac_address = form.getvalue('MAC')
+mac_address = str(form.getvalue('mac_address'))
 
 if (mac_address == "2C:54:6C:66:90:FF"):
     print("Content-Type:text/html;charset=utf-8")

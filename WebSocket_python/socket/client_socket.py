@@ -40,6 +40,8 @@ def send(msg):
     else:
         print(client.recv(2048).decode(FORMAT))
 
+print("MAC: " + getMacAddress()+"\n")
+
 # Se envía el mensaje indicando que se está realizando el handshake
 send("handshake|"+getMacAddress())
 

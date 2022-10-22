@@ -31,12 +31,14 @@ def send(msg):
     client.send(message)
 
     if(autorizacion == False):
-        if(client.recv(2048).decode(FORMAT) == "handshake|OK"):
+        if(str(client.recv(2048).decode(FORMAT)) == "handshake|OK"):
             autorizacion = True
             print("Conexion exitosa")
-        elif(client.recv(2048).decode(FORMAT) == "handshake|FAIL"):
+        elif(str(client.recv(2048).decode(FORMAT)) == "handshake|FAIL"):
+            autorizacion = False
             print("Handshake fallido")
         else:
+            autorizacion = False
             print("Error en handshake")
     else:
         print(client.recv(2048).decode(FORMAT))

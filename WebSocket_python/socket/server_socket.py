@@ -66,17 +66,20 @@ def handle_client(conn, addr):
     conn.close()
 
 def start():
-    server.listen()
-    print(f"[LISTENING] Server is listening on address {ADDR}")
-    while True:
-        conn, addr = server.accept()#espera aca hasta que ocurra una nueva conexión donde guarda el objeto socket y el address el cual nos permite
-        #                               comunicaros hace el cliente
-        #ahora declaramos un threath para manejar la conección de ese cliente
-        thread = threading.Thread(target=handle_client, args=(conn, addr))
-        thread.start()
-        #imprimir cuantas conexiónes activas tenemos
-        print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
-
+    try:
+        server.listen()
+        print(f"[LISTENING] Server is listening on address {ADDR}")
+        while True:
+            conn, addr = server.accept()#espera aca hasta que ocurra una nueva conexión donde guarda el objeto socket y el address el cual nos permite
+            #                               comunicaros hace el cliente
+            #ahora declaramos un threath para manejar la conección de ese cliente
+            thread = threading.Thread(target=handle_client, args=(conn, addr))
+            thread.start()
+            #imprimir cuantas conexiónes activas tenemos
+            print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
+    except:
+        print("Error en el servidor")
+        server.close()
 
 print("[STARTING] server is starting...")
 start()

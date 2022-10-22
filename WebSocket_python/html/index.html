@@ -14,13 +14,13 @@
       <img src="logo_header.png" class="card-img-top" alt="...">
       <div class="card-body">
         <h5 class="card-title">Login</h5>
-        <form action="cgi-bin/login.py" method="post">
+        <form action="http://192.168.1.20/cgi-bin/login.py" method="post">
           <p class="card-text">
             <input name="name" type="text" placeholder="Ingrese nombre" class="mb-2 w-100">
             <input name="lastname" type="text" placeholder="Ingrese apellido" class ="mb-2 w-100">
-            <input name="MAC" type="text" placeholder="Ingrese direccion MAC" class ="w-100">
+            <input name="mac" type="text" placeholder="Ingrese direccion MAC" class ="w-100">
           </p>
-          <button class="btn btn-primary">Entrar</button>
+          <button class="btn btn-primary" type="submit">Entrar</button>
         </form>
       </div>
     </div>

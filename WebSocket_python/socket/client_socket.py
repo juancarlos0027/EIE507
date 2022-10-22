@@ -1,5 +1,5 @@
 import socket
-import os
+import uuid
 
 HEADER = 64
 PORT = 8080
@@ -21,6 +21,7 @@ def getMacAddress():
     return mac
 
 def send(msg):
+    global autorizacion
     message = msg.encode(FORMAT) #encode the message in byte format o encode str in byte object
     msg_length = len(message)
     send_length = str(msg_length).encode(FORMAT)#encode the lenght of the message

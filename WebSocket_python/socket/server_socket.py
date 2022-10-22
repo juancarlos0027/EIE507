@@ -20,7 +20,8 @@ macs = [
     "A4:2B:8C:1D:2E:3F",
     "B5:3C:9D:2E:4F:5G",
     "C6:4D:0E:3F:5G:6H",
-    "D7:5E:1F:4G:6H:7I",
+    "D7:5E:1F:4G:6H:7I"
+    "94:08:53:5A:F9:1A",
 ]
 
 def handle_client(conn, addr):

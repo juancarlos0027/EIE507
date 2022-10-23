@@ -1,5 +1,5 @@
 # Curso EIE507 - Sistemas embebidos
-## Grupo N°(10+1)
+## Grupo N°11
 
 **Estudiantes:**
 - José Henríquez G.

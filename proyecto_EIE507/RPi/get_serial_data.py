@@ -15,7 +15,7 @@ ser = serial.Serial('/dev/ttyAMA0',
 
 # Entramos en un bucle infinito para leer los datos del puerto serial
 while True:
-    try {
+    try:
         # Leemos los datos del puerto serial
         data = ser.readline()
         # Si los datos no son nulos, los imprimimos en pantalla
@@ -29,6 +29,6 @@ while True:
 
             # Imprime la fecha y hora
             print(datetime.datetime.now())
-    } except KeyboardInterrupt:
+    except KeyboardInterrupt:
         print('Adquisición finalizada')
         break

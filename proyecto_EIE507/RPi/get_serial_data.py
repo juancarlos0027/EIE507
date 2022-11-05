@@ -6,7 +6,7 @@ import time
 import datetime
 
 # Configuramos el puerto serial interno de la Raspberry Pi
-ser = serial.Serial('/dev/ttyS0', 9600, timeout=1)
+ser = serial.Serial('/dev/ttyAMA0', 9600, timeout=1)
 
 # Entramos en un bucle infinito para leer los datos del puerto serial
 while True:

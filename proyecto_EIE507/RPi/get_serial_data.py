@@ -21,7 +21,7 @@ while True:
         # Si los datos no son nulos, los imprimimos en pantalla
         if data:
             # Separa los datos por dos puntos
-            data = data.decode('utf-8').split(':')
+            data = data.split(':')
             
             # Imprime los datos del sensor de CO
             print('ID: ' + data[0])

@@ -18,12 +18,13 @@ while True:
     try:
         # Leemos los datos del puerto serial provenientes del Arduino
         data = ser.readline()
-        # Imprimimos los datos en la consola
-        print(data)
 
-        # Imprime la fecha y hora
-        print(datetime.datetime.now())
-            
+        if(len(data) > 0):
+            # Imprimimos los datos en la consola
+            print(data)
+
+            # Imprime la fecha y hora
+            print(datetime.datetime.now())
 
     except KeyboardInterrupt:
         print('\nAdquisicion finalizada\n')

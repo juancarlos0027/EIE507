@@ -22,9 +22,9 @@ while True:
         if data:
             # Separa los datos por dos puntos
             
-            data = data.decode('utf-8')
+            data = data.decode('utf-8', 'replace')
             print(data)
-            ser.flushInput()
+            
             """ data = data.split(':')
             
             # Imprime los datos del sensor de CO

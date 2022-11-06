@@ -17,7 +17,7 @@ ser = serial.Serial('/dev/ttyS0',
 while True:
     try:
         # Leemos los datos del puerto serial
-        data = ser.readline('\r\n')
+        data = ser.readline()
         # Si los datos no son nulos, los imprimimos en pantalla
         if data:
             # Separa los datos por dos puntos

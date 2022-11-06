@@ -16,22 +16,13 @@ ser = serial.Serial('/dev/ttyS0',
 # Entramos en un bucle infinito para leer los datos del puerto serial
 while True:
     try:
-        # Leemos los datos del puerto serial
+        # Leemos los datos del puerto serial provenientes del Arduino
         data = ser.readline()
-        # Si los datos no son nulos, los imprimimos en pantalla
-        if data:
-            # Separa los datos por dos puntos
-            
-            print(data.decode('unicode_escape'))
-            
-            """ data = data.split(':')
-            
-            # Imprime los datos del sensor de CO
-            print('ID: ' + data[0])
-            print('CO: ' + float(data[1]) + ' ppm') """
+        # Imprimimos los datos en la consola
+        print(data)
 
-            # Imprime la fecha y hora
-            print(datetime.datetime.now())
+        # Imprime la fecha y hora
+        print(datetime.datetime.now())
             
 
     except KeyboardInterrupt:

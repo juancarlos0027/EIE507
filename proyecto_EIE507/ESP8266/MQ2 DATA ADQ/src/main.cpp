@@ -33,9 +33,14 @@ void loop() {
   // Se envía el valor del sensor por el puerto serial con el formato de
   // MQ2:valorPPM 
 
-  Serial.print("MQ2:");
-  Serial.println(valorPPM);
+  // Concatenar el valor del sensor con el prefijo "MQ2:" y acondicionar la cadena para que sea recibida por la raspberry pi
+  String valorSensor = "MQ2:" + String(valorPPM);
+  valorSensor.replace(".", ",");
+  valorSensor.replace(" ", "");
 
+  // Imprime el valor del sensor en el puerto serial
+  Serial.println(valorSensor);
+  
   // Espera 5 segundo
   delay(5000);
   

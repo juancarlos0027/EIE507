@@ -22,7 +22,7 @@ while True:
         if data:
             # Separa los datos por dos puntos
             
-            print(data)
+            print(data.decode('unicode_escape'))
             
             """ data = data.split(':')
             

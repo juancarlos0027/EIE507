@@ -23,12 +23,11 @@ while True:
             # Imprimimos los datos en la consola
             try:
                 model, value = data.decode('utf-8').split(':')
-                print(model, value+' ppm', datetime.datetime.now())
+                value = float(value)
+                print(f'{model}: {value} PPM - {datetime.datetime.now()}')
 
-                # Imprime la fecha y hora
-                print(datetime.datetime.now())
             except:
-                print('Error en la lectura de datos')
+                print('[ Error en la lectura de datos ]')
                 continue
 
     except KeyboardInterrupt:

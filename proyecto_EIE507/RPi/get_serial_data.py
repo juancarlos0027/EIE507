@@ -17,18 +17,23 @@ ser = serial.Serial('/dev/ttyS0',
 while True:
     try:
         # Leemos los datos del puerto serial
-        data = ser.readline()
+        data = ser.readline('\r\n')
         # Si los datos no son nulos, los imprimimos en pantalla
         if data:
             # Separa los datos por dos puntos
+            data = data.decode('utf8')
             data = data.split(':')
             
             # Imprime los datos del sensor de CO
             print('ID: ' + data[0])
-            print('CO: ' + data[1] + ' ppm')
+            print('CO: ' + float(data[1]) + ' ppm')
 
             # Imprime la fecha y hora
             print(datetime.datetime.now())
-    except KeyboardInterrupt:
-        print('\nAdquisicion finalizada\n')
-        break
+    except e:
+        // KeyboardInterrupt
+        if(e == KeyboardInterrupt):
+            print('\nAdquisicion finalizada\n')
+            break
+        else:
+            continue

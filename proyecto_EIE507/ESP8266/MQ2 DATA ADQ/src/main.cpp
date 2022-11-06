@@ -40,7 +40,10 @@ void loop() {
 
   // Imprime el valor del sensor en el puerto serial
   Serial.println(valorSensor);
-  
+
+  // Limpia el buffer del puerto serial
+  Serial.flush();
+
   // Espera 5 segundo
   delay(5000);
   

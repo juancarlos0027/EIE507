@@ -1,4 +1,4 @@
-#!/usr/env/bin python3
+#!/usr/env python3
 # Programa principal para lectura de datos en el puerto serial de la Raspberry Pi
 
 import serial
@@ -21,19 +21,20 @@ while True:
         # Si los datos no son nulos, los imprimimos en pantalla
         if data:
             # Separa los datos por dos puntos
-            data = data.decode('utf8')
-            data = data.split(':')
-            
-            # Imprime los datos del sensor de CO
-            print('ID: ' + data[0])
-            print('CO: ' + float(data[1]) + ' ppm')
+            try:
+                data = data.decode('utf8')
+                data = data.split(':')
+                
+                # Imprime los datos del sensor de CO
+                print('ID: ' + data[0])
+                print('CO: ' + float(data[1]) + ' ppm')
 
-            # Imprime la fecha y hora
-            print(datetime.datetime.now())
-    except e:
-        // KeyboardInterrupt
-        if(e == KeyboardInterrupt):
-            print('\nAdquisicion finalizada\n')
-            break
-        else:
-            continue
+                # Imprime la fecha y hora
+                print(datetime.datetime.now())
+            except:
+                pass
+
+
+    except KeyboardInterrupt:
+        print('\nAdquisicion finalizada\n')
+        break

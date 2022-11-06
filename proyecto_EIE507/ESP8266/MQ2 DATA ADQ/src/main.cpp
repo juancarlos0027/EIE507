@@ -1,15 +1,20 @@
 #include <Arduino.h>
+#include <SoftwareSerial.h>
 #include <time.h>
 
 const int RL = 956; // Resistencia de carga de 956 ohms, medidos con multímetro.
 float promediarADC();
 double leerNivelCO(float Vout);
 
+SoftwareSerial MQ2(0, 1); // RX, TX
+
 void setup() {
-  // Configuración del puerto A0 como entrada para el sensor MQ2
-  pinMode(A0, INPUT);
   // Inicializa el puerto serial en 9600 baudios
-  Serial.begin(9600);
+  MQ2.begin(9600);
+
+  // Configuración del puerto A0 como entrada para el sensor MQ2 con SoftwareSerial
+  pinMode(A0, INPUT);
+
 }
 
 void loop() {
@@ -37,8 +42,8 @@ void loop() {
   String valorSensor = "MQ2:" + String(valorPPM)+String("\n");
 
   // Imprime el valor del sensor en el puerto serial
-  Serial.flush();
-  Serial.print(valorSensor.c_str());
+  MQ2.flush();
+  MQ2.print(valorSensor);
 
   // Espera 5 segundo
   delay(5000);

@@ -16,15 +16,20 @@ ser = serial.Serial('/dev/ttyS0',
 # Entramos en un bucle infinito para leer los datos del puerto serial
 while True:
     try:
-        # Leemos los datos del puerto serial provenientes del Arduino
+        # Leemos los datos del puerto serial provenientes del ESP8266
         data = ser.readline()
 
         if(len(data) > 0):
             # Imprimimos los datos en la consola
-            print(data)
+            try:
+                model, value = data.decode('utf-8').split(':')
+                print(model, value+' ppm', datetime.datetime.now())
 
-            # Imprime la fecha y hora
-            print(datetime.datetime.now())
+                # Imprime la fecha y hora
+                print(datetime.datetime.now())
+            except:
+                print('Error en la lectura de datos')
+                continue
 
     except KeyboardInterrupt:
         print('\nAdquisicion finalizada\n')

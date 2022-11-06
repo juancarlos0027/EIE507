@@ -32,8 +32,7 @@ while True:
                 # Imprime la fecha y hora
                 print(datetime.datetime.now())
             except:
-                pass
-
+                continue
 
     except KeyboardInterrupt:
         print('\nAdquisicion finalizada\n')

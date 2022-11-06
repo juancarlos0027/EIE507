@@ -21,18 +21,18 @@ while True:
         # Si los datos no son nulos, los imprimimos en pantalla
         if data:
             # Separa los datos por dos puntos
-            try:
-                data = data.decode('utf8')
-                data = data.split(':')
-                
-                # Imprime los datos del sensor de CO
-                print('ID: ' + data[0])
-                print('CO: ' + float(data[1]) + ' ppm')
+            
+            data = data.decode('utf8')
+            print(data)
+            """ data = data.split(':')
+            
+            # Imprime los datos del sensor de CO
+            print('ID: ' + data[0])
+            print('CO: ' + float(data[1]) + ' ppm') """
 
-                # Imprime la fecha y hora
-                print(datetime.datetime.now())
-            except:
-                continue
+            # Imprime la fecha y hora
+            print(datetime.datetime.now())
+            
 
     except KeyboardInterrupt:
         print('\nAdquisicion finalizada\n')

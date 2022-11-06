@@ -24,6 +24,7 @@ while True:
             
             data = data.decode('utf8')
             print(data)
+            ser.flushInput()
             """ data = data.split(':')
             
             # Imprime los datos del sensor de CO

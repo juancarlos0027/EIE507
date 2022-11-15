@@ -6,7 +6,7 @@ import time
 import datetime
 
 # Configuramos el puerto serial interno de la Raspberry Pi
-ser = serial.Serial('/dev/ttyS0',
+ser = serial.Serial('/dev/ttyAMA0',
                     baudrate=9600,
                     parity=serial.PARITY_NONE,
                     stopbits=serial.STOPBITS_ONE,

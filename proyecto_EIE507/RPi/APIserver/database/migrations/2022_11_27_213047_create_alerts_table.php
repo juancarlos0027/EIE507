@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('alert_parameters', function (Blueprint $table) {
+        Schema::create('alerts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sensor_id')->constrained();
-            $table->foreignId('threshold');
+            $table->foreignId('alert_parameter_id')->constrained();
             $table->timestamps();
         });
     }

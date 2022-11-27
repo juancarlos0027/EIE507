@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('sensors', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('model');
+            $table->string('mac');
+            $table->string('ip');
             $table->timestamps();
         });
     }

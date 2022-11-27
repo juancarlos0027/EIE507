@@ -1,16 +1,29 @@
 #include <Arduino.h>
-#include <SoftwareSerial.h>
 #include <time.h>
+#include <ESP8266WiFi.h> // WiFi driver
+#include <ESP8266HTTPClient.h> // HTTP client
 
 const int RL = 956; // Resistencia de carga de 956 ohms, medidos con multímetro.
 float promediarADC();
 double leerNivelCO(float Vout);
 
-SoftwareSerial MQ2(0, 1); // RX, TX
+const char* ssid = "";
+const char* password = "";
 
 void setup() {
-  // Inicializa el puerto serial en 9600 baudios
-  MQ2.begin(9600);
+  HTTPClient http;
+
+  // Configura la conexión WiFi a la red
+  WiFi.begin(ssid, password);
+  Serial.println("Conectando a WiFi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.println("WiFi conectado");
+  Serial.println("Dirección IP: ");
+  Serial.println(WiFi.localIP());
 
   // Configuración del puerto A0 como entrada para el sensor MQ2 con SoftwareSerial
   pinMode(A0, INPUT);
@@ -26,24 +39,12 @@ void loop() {
   float sensorVoltage = sensorValue * (3.3 / 1023.0);
   double valorPPM = leerNivelCO(sensorVoltage);
 
-  // Imprime el valor del sensor en el puerto serial
-  /* Serial.print("Valor leido: ");
-  Serial.println(sensorValue);
-  Serial.print("Voltaje: ");
-  Serial.println(sensorVoltage);
-  Serial.print("Nivel de CO : ");
-  Serial.print(valorPPM);
-  Serial.println(" PPM"); */
-
-  // Se envía el valor del sensor por el puerto serial con el formato de
-  // MQ2:valorPPM 
-
-  // Concatenar el valor del sensor con el prefijo "MQ2:" y acondicionar la cadena para que sea recibida por la raspberry pi
-  String valorSensor = "MQ2:" + String(valorPPM)+String("\n");
-
-  // Imprime el valor del sensor en el puerto serial
-  MQ2.flush();
-  MQ2.print(valorSensor);
+  // Publicar a través de POST
+  HTTPClient http;
+  http.begin("http://192.168.1.3:3000/api/CO"); // HTTP
+  http.addHeader("Content-Type", "application/json");
+  String payload = "{\"valor\":" + String(valorPPM) + "}";
+  
 
   // Espera 5 segundo
   delay(5000);

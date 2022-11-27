@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('scans', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('sensor_id')->constrained();
+            $table->integer('measure_unit_id');
+            $table->float('amount');
             $table->timestamps();
         });
     }

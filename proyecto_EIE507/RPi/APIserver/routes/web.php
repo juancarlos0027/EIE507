@@ -24,6 +24,8 @@ Route::get('/', function () {
     ]);
 });
 
+Route::post('/api/scan', 'App\Http\Controllers\PublicDataController@store')->name('scan.store');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

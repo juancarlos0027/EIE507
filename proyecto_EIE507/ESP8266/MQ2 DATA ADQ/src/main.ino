@@ -52,6 +52,8 @@ void loop() {
         HTTPClient http;
 
         // Primero obtener la cookie de sesión
+        http.addHeader("Content-Type", "application/json");
+        http.addHeader("Accept", "application/json");
         http.begin(client, api_server + "/sanctum/csrf-cookie");
 
         // Buscar el valor de la cookie de sesión

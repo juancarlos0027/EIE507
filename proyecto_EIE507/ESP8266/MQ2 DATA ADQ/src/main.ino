@@ -51,15 +51,49 @@ void loop() {
         WiFiClient client;
         HTTPClient http;
 
-        String url = api_server + "/api/scan/";      
-        http.begin(client, url.c_str());
-        http.addHeader("Content-Type", "application/json");
-        String payload = "{\"sensor_id\":" + device_id + ", \"measure_unit_id\": 1, \"amount\":" + valorPPMString + "}";
+        // Primero obtener la cookie de sesión
+        http.begin(client, api_server + "/sanctum/csrf-cookie");
 
-        if(http.POST(payload) == 200) {
-            Serial.println("Valor publicado");
+        // Buscar el valor de la cookie de sesión
+        int httpCode = http.GET();
+
+        if (httpCode > 0) {
+            // Obtener la cookie de sesión
+            String cookie = http.header("Set-Cookie");
+            
+            // Extraer el valor de XSRF-TOKEN dentro de la cookie, desde después del signo = hasta justo antes del signo %
+            // CSRF
+            int pos = cookie.indexOf("XSRF-TOKEN");
+
+            // Desde la posición pos + 11, hasta justo antes del signo %
+            String csrf_token = cookie.substring(pos + 11, cookie.indexOf("%", pos + 11));
+
+
+ 
+            // Cerrar la conexión
+            http.end();
+
+            // Enviar los datos al servidor
+            http.begin(client, api_server + "/api/mediciones");
+            http.addHeader("Content-Type", "application/json");
+            http.addHeader("Accept", "application/json");
+            http.addHeader("X-XSRF-TOKEN", xsrf_token);
+
+            // Crear el JSON con los datos
+            String payload = "{\"sensor_id\":" + device_id + ", \"measure_unit_id\": 1, \"amount\":" + valorPPMString + "}";
+            //Serial.println("JSON: " + payload);
+
+            // Enviar el JSON
+            httpCode = http.POST(payload);
+
+            if (httpCode > 0) {
+                String payload = http.getString();
+                Serial.println("Respuesta del servidor: " + payload);
+            } else {
+                Serial.println("Error al enviar los datos al servidor");
+            }
         } else {
-            Serial.println("Error al publicar el valor");
+            Serial.println("Error al obtener la cookie de sesión");
         }
 
         http.end();

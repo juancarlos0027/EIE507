@@ -11,8 +11,6 @@ class PublicDataController extends Controller
     public function store(Request $request){
         // the request is sent in a payload by the esp8266, so we need to decode it
         $payload = $request->all();
-        Log::info($payload);
-        Log::info($request);
 
         if($sensor = Scan::create(
             [
@@ -21,7 +19,8 @@ class PublicDataController extends Controller
                 'amount' => $payload['amount']
             ]
         )){
-            return response()->json('OK', 200);
+            // if the sensor is created, we return a 200 status code
+            return response()->json(['status' => 'ok'], 200);
         }
         else{
             return response()->json(['error' => 'Error al guardar la información'], 500);

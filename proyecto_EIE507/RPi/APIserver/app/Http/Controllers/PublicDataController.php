@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 use App\Models\Sensor;
-
+use App\Models\Scan;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
 class PublicDataController extends Controller
 {
     public function store(Request $request){
         // the request is sent in a payload by the esp8266, so we need to decode it
-        $payload = json_decode($request->payload, true);
+        $payload = $request->all();
         Log::info($payload);
         Log::info($request);
 

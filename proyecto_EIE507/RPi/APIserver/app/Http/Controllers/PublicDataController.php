@@ -15,7 +15,7 @@ class PublicDataController extends Controller
                 'amount' => $request->amount
             ]
         ))        
-            return response()->json($sensor, 200);
+            return response()->json('OK', 200);
         else
             return response()->json(['error' => 'Error al guardar la información'], 500);
     }

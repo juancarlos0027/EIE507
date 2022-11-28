@@ -51,7 +51,7 @@ void loop() {
         WiFiClient client;
         HTTPClient http;
 
-        String url = api_server + "/api/mediciones/";      
+        String url = api_server + "/api/scan/";      
         http.begin(client, url.c_str());
         http.addHeader("Content-Type", "application/json");
         String payload = "{\"sensor_id\":" + device_id + ", \"measure_unit_id\": 1, \"amount\":" + valorPPMString + "}";

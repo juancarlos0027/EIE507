@@ -8,14 +8,11 @@ use Illuminate\Http\Request;
 class PublicDataController extends Controller
 {
     public function store(Request $request){
-        //$request is a JSON object, so we need to decode it
-        $data = json_decode($request->getContent(), true);
-
         if($sensor = Scan::create(
             [
-                'sensor_id' => $data->sensor_id,
-                'measure_unit_id' => $data->measure_unit_id,
-                'amount' => $data->amount
+                'sensor_id' => $request->sensor_id,
+                'measure_unit_id' => $request->measure_unit_id,
+                'amount' => $request->amount
             ]
         ))        
             return response()->json($sensor, 200);

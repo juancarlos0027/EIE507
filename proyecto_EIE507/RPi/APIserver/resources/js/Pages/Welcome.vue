@@ -144,12 +144,14 @@ export default {
                         <table class="table-auto w-full">
                             <thead>
                                 <tr>
+                                    <th class="px-4 py-2">ID</th>
                                     <th class="px-4 py-2">Fecha</th>
                                     <th class="px-4 py-2">Lectura</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="dato in datosSensor" :key="dato.id">
+                                    <td class="border px-4 py-2">{{ dato.id }}</td>
                                     <td class="border px-4 py-2">{{ dato.created_at_formatted }}</td>
                                     <td class="border px-4 py-2">{{ dato.amount }}</td>
                                 </tr>

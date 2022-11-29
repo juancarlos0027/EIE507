@@ -22,6 +22,7 @@
     },
     "dependencies": {
         "chart.js": "^4.0.1",
-        "chartjs": "^0.3.24"
+        "chartjs": "^0.3.24",
+        "plotly.js-dist-min": "^2.16.3"
     }
 }

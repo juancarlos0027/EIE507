@@ -1,13 +1,12 @@
 <script>
 import { Head, Link } from '@inertiajs/inertia-vue3';
-import { Chart } from 'chart.js/auto';
+import Plotly from 'plotly.js-dist-min'
 import axios from 'axios';
 
 export default {
     components: {
         Head,
         Link,
-        Chart,
         axios
     },
 
@@ -28,59 +27,20 @@ export default {
         this.datosSensor = this.Scans;
         this.getSensorData();
     
-        const chartAreaBorder = {
-            id: 'chartAreaBorder',
+        var trace1 = {
+        x: this.datosSensor.map(function(e) {
+            return e.created_at_formatted;
+        }),
+        y: this.datosSensor.map(function(e) {
+            return e.amount;
+        }),
+        type: 'scatter'
+        };        
 
-            beforeDraw(chart, args, options) {
-                const { ctx, chartArea: { left, top, width, height } } = chart;
+        var data = [trace1];
 
-                ctx.save();
-                ctx.strokeStyle = options.borderColor;
-                ctx.lineWidth = options.borderWidth;
-                ctx.setLineDash(options.borderDash || []);
-                ctx.lineDashOffset = options.borderDashOffset;
-                ctx.strokeRect(left, top, width, height);
-                ctx.restore();
-            }
-        };
+        Plotly.newPlot('gd', data);
 
-        new Chart(
-            document.getElementById('graficaSensor'),
-            {
-                type: 'line',
-                plugins: [chartAreaBorder],
-                options: {
-                    plugins: {
-                        chartAreaBorder: {
-                            borderColor: '#888888',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
-                        },
-                    },
-                    scales: {
-                        y: {
-                            grid: {
-                            color: '#888888'
-                            }
-                        },
-                        x: {
-                            grid: {
-                            color: '#888888'
-                            }
-                        }
-                    }                            
-                },
-                data: {
-                    labels: this.datosSensor.map(dato => dato.created_at),
-                    datasets: [
-                    {
-                        label: 'Lectura del sensor (PPM de CO)',
-                        data: this.datosSensor.map(dato => dato.amount)
-                    }
-                    ]
-                }
-            }
-        );
     },
 
     methods: {
@@ -160,7 +120,7 @@ export default {
                     </div>
 
                     <div id="grafico">
-                        <canvas id="graficaSensor" width="400" height="400"></canvas>
+                        <div id="gd"></div>
                     </div>
                 </div>
             </div>            

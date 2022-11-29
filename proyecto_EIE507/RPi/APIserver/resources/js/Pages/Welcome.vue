@@ -42,43 +42,59 @@ export default {
         };
 
         new Chart(
-        document.getElementById('graficaSensor'),
-        {
-        type: 'line',
-        plugins: [chartAreaBorder],
-        options: {
-            plugins: {
-                chartAreaBorder: {
-                    borderColor: '#888888',
-                    borderWidth: 2,
-                    borderDash: [5, 5],
-                },
-            },
-            scales: {
-                y: {
-                    grid: {
-                    color: '#888888'
-                    }
-                },
-                x: {
-                    grid: {
-                    color: '#888888'
-                    }
-                }
-            }                            
-        },
-        data: {
-            labels: this.datosSensor.map(dato => dato.created_at),
-            datasets: [
+            document.getElementById('graficaSensor'),
             {
-                label: 'Lectura del sensor (PPM de CO)',
-                data: this.datosSensor.map(dato => dato.amount)
+                type: 'line',
+                plugins: [chartAreaBorder],
+                options: {
+                    plugins: {
+                        chartAreaBorder: {
+                            borderColor: '#888888',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                        },
+                    },
+                    scales: {
+                        y: {
+                            grid: {
+                            color: '#888888'
+                            }
+                        },
+                        x: {
+                            grid: {
+                            color: '#888888'
+                            }
+                        }
+                    }                            
+                },
+                data: {
+                    labels: this.datosSensor.map(dato => dato.created_at),
+                    datasets: [
+                    {
+                        label: 'Lectura del sensor (PPM de CO)',
+                        data: this.datosSensor.map(dato => dato.amount)
+                    }
+                    ]
+                }
             }
-            ]
-        }
-        }
-    );
+        );
     },
+
+    methods: {
+        // Obtener datos cada 5 segundos
+        getDatosSensor() {
+            setTimeout(() => {
+                axios.get('/api/scan/1')
+                .then(response => {
+                    this.datosSensor = response.data;
+                    this.getDatosSensor();
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            }, 5000);
+        }
+    }
 };
 
 </script>
@@ -122,6 +138,24 @@ export default {
                                 <li class="list-disc">Sebastián Bruna</li>
                             </ul>
                         </div>
+                    </div>
+
+                    <div id="tablaDatos" class="my-8">
+                        <!-- tabla con los datos del sensor -->
+                        <table class="table-auto w-full">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2">Fecha</th>
+                                    <th class="px-4 py-2">Lectura</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="dato in datosSensor" :key="dato.id">
+                                    <td class="border px-4 py-2">{{ dato.created_at_formatted }}</td>
+                                    <td class="border px-4 py-2">{{ dato.amount }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                     <div id="grafico">

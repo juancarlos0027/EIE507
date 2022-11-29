@@ -16,6 +16,16 @@ class Scan extends Model
     ];
 
     protected $cast = [
-        'created_at' => 'datetime:d-m-Y H:i:s',
+        // created_at without the Z at the end
+        'created_at' => 'datetime:Y-m-d H:i:s'
     ];
+
+    // Serializing the created_at attribute
+    protected $appends = [
+        'created_at_formatted'
+    ];
+
+    public function getCreatedAtFormattedAttribute(){
+        return $this->created_at->format('Y-m-d H:i:s');
+    }
 }

@@ -1,12 +1,14 @@
 <script>
 import { Head, Link } from '@inertiajs/inertia-vue3';
-import { Chart } from 'chart.js/auto'
+import { Chart } from 'chart.js/auto';
+import axios from 'axios';
 
 export default {
     components: {
         Head,
         Link,
-        Chart
+        Chart,
+        axios
     },
 
     props:{
@@ -24,6 +26,7 @@ export default {
 
     mounted() {
         this.datosSensor = this.Scans;
+        this.getSensorData();
     
         const chartAreaBorder = {
             id: 'chartAreaBorder',
@@ -81,19 +84,15 @@ export default {
     },
 
     methods: {
-        // Obtener datos cada 5 segundos
-        getDatosSensor() {
-            setTimeout(() => {
-                axios.get('/api/scan/1')
-                .then(response => {
-                    this.datosSensor = response.data;
-                    this.getDatosSensor();
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-            }, 5000);
-        }
+        // Obtener datos del sensor cada 5 segundos
+        async getSensorData() {
+            await axios.get('/api/data/1')
+            .then(response => {
+                console.log(response.data['data']);
+                this.datosSensor = response.data['data'];
+                setTimeout(this.getSensorData, 5000);
+            });            
+        }        
     }
 };
 

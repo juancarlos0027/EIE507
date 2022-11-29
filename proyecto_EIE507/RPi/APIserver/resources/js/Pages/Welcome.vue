@@ -29,15 +29,15 @@ export default {
             id: 'chartAreaBorder',
 
             beforeDraw(chart, args, options) {
-            const { ctx, chartArea: { left, top, width, height } } = chart;
+                const { ctx, chartArea: { left, top, width, height } } = chart;
 
-            ctx.save();
-            ctx.strokeStyle = options.borderColor;
-            ctx.lineWidth = options.borderWidth;
-            ctx.setLineDash(options.borderDash || []);
-            ctx.lineDashOffset = options.borderDashOffset;
-            ctx.strokeRect(left, top, width, height);
-            ctx.restore();
+                ctx.save();
+                ctx.strokeStyle = options.borderColor;
+                ctx.lineWidth = options.borderWidth;
+                ctx.setLineDash(options.borderDash || []);
+                ctx.lineDashOffset = options.borderDashOffset;
+                ctx.strokeRect(left, top, width, height);
+                ctx.restore();
             }
         };
 
@@ -49,11 +49,23 @@ export default {
         options: {
             plugins: {
                 chartAreaBorder: {
-                    borderColor: '#FFFFFF',
+                    borderColor: '#888888',
                     borderWidth: 2,
                     borderDash: [5, 5],
                 },
-            },            
+            },
+            scales: {
+                y: {
+                    grid: {
+                    color: '#888888'
+                    }
+                },
+                x: {
+                    grid: {
+                    color: '#888888'
+                    }
+                }
+            }                            
         },
         data: {
             labels: this.datosSensor.map(dato => dato.created_at),

@@ -27,4 +27,18 @@ class PublicDataController extends Controller
             return response()->json(['error' => 'Error al guardar la información'], 500);
         }
     }
+
+    public Function getSensorData(Request $request, $sensor_id){
+        $sensor_id = $request->sensor_id;
+        
+        $sensor = Sensor::find($sensor_id);
+        if($sensor){
+            // Traer los ultimos 20 registros
+            $scans = Scan::where('sensor_id', $sensor_id)->orderBy('created_at', 'desc')->take(20)->get();
+            return response()->json(['data' => $scans], 200);
+        }
+        else{
+            return response()->json(['error' => 'Sensor no encontrado'], 404);
+        }
+    }
 }

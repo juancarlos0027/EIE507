@@ -14,4 +14,8 @@ class Scan extends Model
         'measure_unit_id',
         'amount'
     ];
+
+    protected $cast = [
+        'created_at' => 'datetime:d-m-Y H:i:s',
+    ];
 }

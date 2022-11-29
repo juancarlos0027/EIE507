@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\Scan;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +22,12 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'Scans' => Scan::where('id', 1)->take(20)->get(),
     ]);
 });
 
 Route::post('/api/scan', [App\Http\Controllers\PublicDataController::class, 'store'])->name('scan.store');
+Route::get('/api/data/{sensor_id}', [App\Http\Controllers\PublicDataController::class, 'getSensorData'])->name('data.get');
 
 Route::middleware([
     'auth:sanctum',

@@ -1,12 +1,74 @@
-<script setup>
+<script>
 import { Head, Link } from '@inertiajs/inertia-vue3';
+import { Chart } from 'chart.js/auto'
 
-defineProps({
-    canLogin: Boolean,
-    canRegister: Boolean,
-    laravelVersion: String,
-    phpVersion: String,
-});
+export default {
+    components: {
+        Head,
+        Link,
+        Chart
+    },
+
+    props:{
+        Scans: {
+            type: Array,
+            required: true,
+        },
+    },
+
+    data() {
+        return {
+            datosSensor: null
+        };
+    },
+
+    mounted() {
+        this.datosSensor = this.Scans;
+    
+        const chartAreaBorder = {
+            id: 'chartAreaBorder',
+
+            beforeDraw(chart, args, options) {
+            const { ctx, chartArea: { left, top, width, height } } = chart;
+
+            ctx.save();
+            ctx.strokeStyle = options.borderColor;
+            ctx.lineWidth = options.borderWidth;
+            ctx.setLineDash(options.borderDash || []);
+            ctx.lineDashOffset = options.borderDashOffset;
+            ctx.strokeRect(left, top, width, height);
+            ctx.restore();
+            }
+        };
+
+        new Chart(
+        document.getElementById('graficaSensor'),
+        {
+        type: 'line',
+        plugins: [chartAreaBorder],
+        options: {
+            plugins: {
+                chartAreaBorder: {
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                },
+            },            
+        },
+        data: {
+            labels: this.datosSensor.map(dato => dato.created_at),
+            datasets: [
+            {
+                label: 'Lectura del sensor (PPM de CO)',
+                data: this.datosSensor.map(dato => dato.amount)
+            }
+            ]
+        }
+        }
+    );
+    },
+};
+
 </script>
 
 <template>
@@ -48,6 +110,10 @@ defineProps({
                                 <li class="list-disc">Sebastián Bruna</li>
                             </ul>
                         </div>
+                    </div>
+
+                    <div id="grafico">
+                        <canvas id="graficaSensor" width="400" height="400"></canvas>
                     </div>
                 </div>
             </div>            

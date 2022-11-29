@@ -24,7 +24,7 @@ class PublicDataController extends Controller
             return response()->json(['status' => 'ok'], 200);
         }
         else{
-            return response()->json(['error' => 'Error al guardar la información'], 404);
+            return response()->json(['error' => 'Error al guardar la información'], 500);
         }
     }
 }

@@ -10,7 +10,7 @@ class PublicDataController extends Controller
 {
     public function store(Request $request){
         // the request is sent in a payload by the esp8266, so we need to decode it
-        dd($request->all());
+        //dd($request->all());
         $payload = $request->all();
 
         if($sensor = Scan::create(

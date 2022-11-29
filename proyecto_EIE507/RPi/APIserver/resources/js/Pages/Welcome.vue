@@ -26,20 +26,6 @@ export default {
     mounted() {
         this.datosSensor = this.Scans;
         this.getSensorData();
-    
-        var trace1 = {
-        x: this.datosSensor.map(function(e) {
-            return e.created_at_formatted;
-        }),
-        y: this.datosSensor.map(function(e) {
-            return e.amount;
-        }),
-        type: 'scatter'
-        };        
-
-        var data = [trace1];
-
-        Plotly.newPlot('gd', data);
 
     },
 
@@ -50,6 +36,21 @@ export default {
             .then(response => {
                 console.log(response.data['data']);
                 this.datosSensor = response.data['data'];
+
+                var trace1 = {
+                x: this.datosSensor.map(function(e) {
+                    return e.created_at_formatted;
+                }),
+                y: this.datosSensor.map(function(e) {
+                    return e.amount;
+                }),
+                type: 'scatter'
+                };        
+
+                var data = [trace1];
+
+                Plotly.newPlot('gd', data);
+
                 setTimeout(this.getSensorData, 5000);
             });            
         }        
